@@ -1,1 +1,1 @@
-import {createPhotos} from './data';
+import {createPhotos} from './modules/createPhotosArray';
