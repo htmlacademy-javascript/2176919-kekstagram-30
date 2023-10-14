@@ -66,3 +66,5 @@ const DESCRIPTIONS = [
   'Скрытые детали',
 ];
 const PHOTO_COUNT = 25;
+
+export {COMMENTS, NAMES, DESCRIPTIONS, PHOTO_COUNT};

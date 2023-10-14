@@ -1,4 +1,4 @@
-import '../data/data';
+import {COMMENTS, NAMES, DESCRIPTIONS, PHOTO_COUNT} from '../data/data';
 import {getRandomArrayElement} from '../utils/utils';
 import {createIdGenerator} from '../utils/utils';
 import {getRandomInteger} from '../utils/utils';
