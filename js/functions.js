@@ -1,16 +1,13 @@
-/*
-'8:00' - начало рабочего дня
-'17:30' - конец рабочего дня
-'14:00' - начало встречи
-90 - продолжительность встречи в минутах
-*/
+const convertsHoursMinutes = (hours) => {
+  const time = hours.split(':').concat(hours.split(':')).map(i => Number(i));
+  const minutes = time[0] * 60 + time[1];
+  return minutes;
+};
 
 const findsMeeting = (workBeginning, workEnd, startMeeting, duration) => {
-  const work = workBeginning.split(':').concat(workEnd.split(':')).map(i => Number(i));
-  const meetingBeginning = startMeeting.split(':').map(i => Number(i));
-  const startWorkMinutes = work[0] * 60 + work[1];
-  const endWorkMinutes = work[2] * 60 + work[3];
-  const startMeetingMinutes = meetingBeginning[0] * 60 + meetingBeginning[1];
+  const startWorkMinutes = convertsHoursMinutes(workBeginning);
+  const endWorkMinutes = convertsHoursMinutes(workEnd);
+  const startMeetingMinutes = convertsHoursMinutes(startMeeting);
   if (startMeetingMinutes >= startWorkMinutes && startMeetingMinutes <= endWorkMinutes) {
     const endMeetingMinutes = startMeetingMinutes + duration;
     return endMeetingMinutes <= endWorkMinutes;
