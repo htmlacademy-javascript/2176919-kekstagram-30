@@ -1,0 +1,14 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es2022",
+    "removeComments": true,
+    "outDir": "js",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
