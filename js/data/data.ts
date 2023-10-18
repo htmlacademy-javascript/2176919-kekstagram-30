@@ -1,21 +1,13 @@
-export function doCopies ():string[] {
-  return [...this.array];
-}
-
-export const COMMENTS = {
-  array: [
-    'Всё отлично!',
-    'В целом всё неплохо. Но не всё.',
-    'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-    'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-    'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-    'Лица у людей на фотке перекошены, как будто их избивают.',
-    'Как можно было поймать такой неудачный момент?!',
-  ],
-  doCopies,
-};
-export const NAMES = {
-  array: [
+const COMMENTS: string[] = [
+  'Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают.',
+  'Как можно было поймать такой неудачный момент?!'
+  ];
+const NAMES: string[] = [
     'Иван Смирнов',
     'Александр Кузнецов',
     'Михаил Попов',
@@ -40,12 +32,9 @@ export const NAMES = {
     'Нина Беляева',
     'Лариса Тарасова',
     'Юрий Белов',
-    'Светлана Иванова',
-  ],
-  doCopies,
-};
-export const DESCRIPTIONS = {
-  array: [
+    'Светлана Иванова'
+  ];
+const DESCRIPTIONS: string[] = [
     'Магия сезонов, каждый со своим очарованием.',
     'Ощущение свободы и приключений.',
     'Окруженный природой, наслаждаюсь моментом.',
@@ -75,7 +64,26 @@ export const DESCRIPTIONS = {
     'Игра пропорций',
     'Магия света',
     'Скрытые детали',
-  ],
-  doCopies,
-};
+  ];
+
 export const PHOTO_COUNT:number = 25;
+
+const doCopies = (array: string[]) => {
+  let desiredArray = [...array];
+  return () :string[] => desiredArray;
+}
+
+export const createComments = doCopies(COMMENTS);
+export const createNames = doCopies(NAMES);
+export const createDescriptions = doCopies(DESCRIPTIONS);
+
+/*
+const doCopies = (array) => {
+    let desiredArray = [...array];
+    return () => desiredArray;
+};
+const des = doCopies(DESCRIPTIONS);
+const ret = doCopies(NAMES);
+console.log(des());
+console.log(ret());
+ */
