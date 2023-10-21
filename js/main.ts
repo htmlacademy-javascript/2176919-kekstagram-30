@@ -1,2 +1,1 @@
-import {createPhotos} from './modules/createPhotosArray';
-createPhotos;
+import './modules/drawingThumbnails';

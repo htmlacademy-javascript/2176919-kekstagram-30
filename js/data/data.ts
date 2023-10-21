@@ -69,21 +69,10 @@ const DESCRIPTIONS: string[] = [
 export const PHOTO_COUNT:number = 25;
 
 const doCopies = (array: string[]) => {
-  let desiredArray = [...array];
+  const desiredArray = [...array];
   return () :string[] => desiredArray;
 }
 
 export const createComments = doCopies(COMMENTS);
 export const createNames = doCopies(NAMES);
 export const createDescriptions = doCopies(DESCRIPTIONS);
-
-/*
-const doCopies = (array) => {
-    let desiredArray = [...array];
-    return () => desiredArray;
-};
-const des = doCopies(DESCRIPTIONS);
-const ret = doCopies(NAMES);
-console.log(des());
-console.log(ret());
- */

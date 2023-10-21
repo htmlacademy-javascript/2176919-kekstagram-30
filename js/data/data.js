@@ -67,7 +67,7 @@ const DESCRIPTIONS = [
 ];
 export const PHOTO_COUNT = 25;
 const doCopies = (array) => {
-    let desiredArray = [...array];
+    const desiredArray = [...array];
     return () => desiredArray;
 };
 export const createComments = doCopies(COMMENTS);

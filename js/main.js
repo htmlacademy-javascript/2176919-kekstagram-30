@@ -1,3 +1,2 @@
-import { createPhotos } from './modules/createPhotosArray';
-createPhotos;
+import './modules/drawingThumbnails';
 //# sourceMappingURL=main.js.map
