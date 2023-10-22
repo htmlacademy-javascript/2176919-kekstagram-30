@@ -7,6 +7,7 @@ const picturesListFragment: DocumentFragment = document.createDocumentFragment()
 
 const drawingThumbnail = createPhotos;
 
+if (template && templatePicture && picturesList) {
 drawingThumbnail.forEach(({url, description, likes, comments}) => {
   const pictureElement: HTMLElement = <HTMLElement>templatePicture.cloneNode(true);
   const pictureImg: HTMLImageElement = pictureElement.querySelector('.picture__img');
@@ -21,3 +22,4 @@ drawingThumbnail.forEach(({url, description, likes, comments}) => {
 });
 
 picturesList.appendChild(picturesListFragment);
+}
