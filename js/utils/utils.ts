@@ -14,3 +14,5 @@ export const getRandomInteger = (a:number = 1, b:number = 500) => {
 };
 
 export const getRandomArrayElement = (elements:string[]) => elements[getRandomInteger(0, elements.length - 1)];
+
+export const isEscapeKey = (evt) => evt.key === 'Escape';
