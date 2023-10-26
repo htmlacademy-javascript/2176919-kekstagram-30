@@ -1,5 +1,5 @@
 import {createPhotos} from './createPhotosArray';
-import {createBigPhoto} from './renderingBigPhoto'
+import {createBigPhoto, createBigComments} from './renderingBigPhoto'
 
 const template: HTMLTemplateElement = document.querySelector('#picture');
 const templatePicture: HTMLElement = template.content.querySelector('.picture');
@@ -19,7 +19,9 @@ drawingThumbnail.forEach(({url,likes, comments, description}) => {
   pictureImg.alt = description;
   pictureLikes.textContent = `${likes}`;
   pictureComments.textContent = `${comments.length}`;
-  pictureElement.addEventListener('click', () => createBigPhoto(url, likes, comments, description));
+  pictureElement.addEventListener('click', () => {
+    createBigPhoto(url, likes, comments, description);
+  });
   picturesListFragment.appendChild(pictureElement);
 });
 

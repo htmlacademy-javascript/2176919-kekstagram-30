@@ -5,7 +5,7 @@ const generatePhotoId = createIdGenerator();
 const generateUrl = createIdGenerator();
 const generateCommentId = createIdGenerator();
 
-interface Comment {
+export interface Comment {
   id: number,
   avatar: string,
   message: string,
