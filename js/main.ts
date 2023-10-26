@@ -1,2 +1,2 @@
 import './modules/drawingThumbnails';
-import './modules/renderingBigPhotos';
+import './modules/renderingBigPhoto';

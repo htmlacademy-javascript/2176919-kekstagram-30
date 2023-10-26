@@ -1,3 +1,3 @@
 import './modules/drawingThumbnails';
-import './modules/renderingBigPhotos';
+import './modules/renderingBigPhoto';
 //# sourceMappingURL=main.js.map
