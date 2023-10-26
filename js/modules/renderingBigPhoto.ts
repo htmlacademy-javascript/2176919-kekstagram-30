@@ -46,11 +46,18 @@ export const createBigPhoto = (url: string, likes: number, comments: Comment[], 
 };
 
 const createBigComments = (comments: Comment[]): void => {
+
+  const commentsAll = bigComments.querySelectorAll('.social__comment');
+  const commentTemplate = commentsAll[0].cloneNode(true);
+
+  commentsAll.forEach(comment => {
+    comment.remove();
+  });
   let commentCounter: number = 0;
 
   comments.forEach(({avatar, name, message}) => {
     if (commentCounter < 5) {
-      const newComment = bigComments.querySelector('.social__comment').cloneNode(true);
+      const newComment = commentTemplate.cloneNode(true);
       const bigCommentAvatar = newComment.querySelector('.social__picture');
       const bigCommentText = newComment.querySelector('.social__text');
 
