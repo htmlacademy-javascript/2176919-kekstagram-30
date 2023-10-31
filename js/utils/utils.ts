@@ -16,3 +16,13 @@ export const getRandomInteger = (a:number = 1, b:number = 500) => {
 export const getRandomArrayElement = (elements:string[]) => elements[getRandomInteger(0, elements.length - 1)];
 
 export const isEscapeKey = (evt: KeyboardEvent): boolean => evt.key === 'Escape';
+
+export const onDocumentKeydown = (handler: Function) => {
+  const close = handler;
+  return function(evt: KeyboardEvent) {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      close();
+    }
+  };
+};

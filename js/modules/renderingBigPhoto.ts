@@ -1,4 +1,4 @@
-import {isEscapeKey} from '../utils/utils';
+import {onDocumentKeydown} from '../utils/utils';
 import {Comment} from './createPhotosArray';
 
 const bigPicture: HTMLElement = document.querySelector('.big-picture');
@@ -8,13 +8,6 @@ const commentLoader: HTMLElement = bigPicture.querySelector('.comments-loader');
 const closeElement: HTMLElement = bigPicture.querySelector('.big-picture__cancel');
 let showingComments: number = 5;
 let commentsNew: Comment[] = [];
-
-const onDocumentKeydown = (evt: KeyboardEvent): void => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeBigPhoto();
-  }
-};
 
 const onShowComments = (): void => {
   showingComments += 5;
@@ -33,14 +26,14 @@ const checkingNumberComments = () => {
 const openBigPhoto = (): void => {
   bigPicture.classList.remove ('hidden');
   document.body.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumentKeydown);
+  document.addEventListener('keydown', handlerEsc);
   commentLoader.addEventListener('click', onShowComments);
 };
 
 const closeBigPhoto = (): void => {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onDocumentKeydown);
+  document.removeEventListener('keydown', handlerEsc);
   showingComments = 5;
   commentCounter.textContent = `${showingComments}`;
   commentLoader.removeEventListener('click', onShowComments);
@@ -49,6 +42,8 @@ const closeBigPhoto = (): void => {
 closeElement.addEventListener('click', (): void => {
   closeBigPhoto();
 });
+
+const handlerEsc = onDocumentKeydown(closeBigPhoto);
 
 export const createBigPhoto = (url: string, likes: number, comments: Comment[], description: string): void => {
   openBigPhoto();
