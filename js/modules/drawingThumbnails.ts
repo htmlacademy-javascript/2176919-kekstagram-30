@@ -1,5 +1,5 @@
 import {createPhotos} from './createPhotosArray';
-import {createBigPhoto, createBigComments} from './renderingBigPhoto'
+import {createBigPhoto} from './renderingBigPhoto'
 
 const template: HTMLTemplateElement = document.querySelector('#picture');
 const templatePicture: HTMLElement = template.content.querySelector('.picture');
