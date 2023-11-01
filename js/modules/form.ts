@@ -1,5 +1,5 @@
 import {onDocumentKeydown} from '../utils/utils';
-import '../../node_modules/pristinejs/dist/pristine.js';
+import Pristine from 'pristinejs';
 
 const loadingImage: HTMLElement = document.querySelector('.img-upload');
 
