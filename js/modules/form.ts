@@ -1,4 +1,5 @@
 import {onDocumentKeydown} from '../utils/utils';
+import '../../node_modules/pristinejs/dist/pristine.js';
 
 const loadingImage: HTMLElement = document.querySelector('.img-upload');
 
@@ -38,27 +39,42 @@ let error: string;
 const validateHashtags = (value: string): boolean => {
   const hashtag: RegExp = /^#[a-zа-яё0-9]{1,19}$/i;
   const hashtags: string[] = value.trim().split(' ');
+
+  if (hashtags.includes('')) {
+    error = 'Между хэштэгами должен быть один пробел';
+    return false;
+  };
+
+  if (hashtags.some((el) => el.includes('#', 1))) {
+    error = 'Между хэштэгами должен быть хотя бы один пробел';
+    return false;
+  }
+
   let result: boolean = true;
+
   if (!value) {
     return result;
   }
+
   if (hashtags.length > 5) {
     error = 'Хэштегов не должно быть больше пяти';
-    result = false;
+    return false;
   }
+
   hashtags.forEach((el: string) => {
     if (!hashtag.test(el)) {
-      error = 'Введён невалидный хэш-тег';
+      error = 'Такой хэштег не подойдет';
       result = false;
     }
   });
-  const uniqueHashtags = new Set();
+
+  const uniqueHashtags: string[] = [];
   hashtags.forEach ((el: string) => {
-    if (uniqueHashtags.has(el)) {
+    if (uniqueHashtags.includes(el)) {
       error = 'Хэш-теги повторяются';
       result = false;
     } else {
-      uniqueHashtags.add(el);
+      uniqueHashtags.push(el);
     }
   })
   return result;
