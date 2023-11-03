@@ -4,6 +4,7 @@
     "removeComments": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
+    "esModuleInterop": true,
   },
   "exclude": [
     "node_modules"

@@ -11,16 +11,19 @@
     "url": "https://github.com/htmlacademy-javascript/2176919-kekstagram-30/issues"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "eslint": "8.48.0",
     "eslint-config-htmlacademy": "9.1.1",
     "pristinejs": "1.1.0",
+    "ts-jest": "29.1.1",
     "typescript": "5.2.2",
     "vite": "4.4.9"
   },
   "license": "MIT",
   "scripts": {
     "start": "vite --port 3000 --open",
-    "lint": "eslint js/"
+    "lint": "eslint js/",
+    "test": "jest"
   },
   "engines": {
     "node": "18",

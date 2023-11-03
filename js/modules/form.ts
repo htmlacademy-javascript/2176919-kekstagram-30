@@ -1,35 +1,34 @@
 import {onDocumentKeydown} from '../utils/utils';
 import Pristine from 'pristinejs';
 
-const loadingImage: HTMLElement = document.querySelector('.img-upload');
-
-const imageEditingForm: HTMLElement = loadingImage.querySelector('.img-upload__overlay');
-const imageSelection: HTMLInputElement = loadingImage.querySelector('.img-upload__input');
-const imageCansel: HTMLElement = loadingImage.querySelector('.img-upload__cancel');
-const imageForm: HTMLElement = loadingImage.querySelector('.img-upload__form');
-const hashtagInput: HTMLElement = imageForm.querySelector('.text__hashtags');
-const descriptionInput: HTMLElement = imageForm.querySelector('.text__description');
+const loadingImage: HTMLElement | null = document.querySelector('.img-upload');
+const imageEditingForm: HTMLElement | null = loadingImage && loadingImage.querySelector('.img-upload__overlay');
+const imageSelection: HTMLInputElement | null = loadingImage && loadingImage.querySelector('.img-upload__input');
+const imageCancel: HTMLElement | null = loadingImage && loadingImage.querySelector('.img-upload__cancel');
+const imageForm: HTMLElement | null = loadingImage && loadingImage.querySelector('.img-upload__form');
+const hashtagInput: HTMLElement | null = imageForm && imageForm.querySelector('.text__hashtags');
+const descriptionInput: HTMLElement | null = imageForm && imageForm.querySelector('.text__description');
 
 const openImageSelection = (): void => {
-  imageEditingForm.classList.remove('hidden');
+  imageEditingForm && imageEditingForm.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', handlerEsc);
 };
 
 const closeImageSelection = (): void => {
-  if (document.activeElement !== hashtagInput && document.activeElement !== descriptionInput) {
-    imageEditingForm.classList.add('hidden');
+  if (document.activeElement !== hashtagInput && document.activeElement !== descriptionInput && imageSelection) {
+    imageEditingForm && imageEditingForm.classList.add('hidden');
     document.body.classList.remove('modal-open');
     imageSelection.value = '';
     document.removeEventListener('keydown', handlerEsc);
   }
 };
 
-imageSelection.addEventListener('change', () => {
+imageSelection && imageSelection.addEventListener('change', () => {
   openImageSelection();
 });
 
-imageCansel.addEventListener('click', () => {
+imageCancel && imageCancel.addEventListener('click', () => {
   closeImageSelection();
 });
 
@@ -95,7 +94,7 @@ const pristine = new Pristine(imageForm, {
 pristine.addValidator(hashtagInput, validateHashtags, getHashtagsErrorMessage);
 pristine.addValidator(descriptionInput, validateDescription, 'длина комментария больше 140 символов.');
 
-imageForm.addEventListener('submit', (evt: SubmitEvent) => {
+imageForm && imageForm.addEventListener('submit', (evt: SubmitEvent) => {
   const isValid: Function = pristine.validate();
   if (!isValid) {
     evt.preventDefault();
