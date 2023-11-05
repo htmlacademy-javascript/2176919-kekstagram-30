@@ -39,6 +39,12 @@ const validateHashtags = (value: string): boolean => {
   const hashtag: RegExp = /^#[a-zа-яё0-9]{1,19}$/i;
   const hashtags: string[] = value.trim().split(' ');
 
+  let result: boolean = true;
+
+  if (!value) {
+    return result;
+  }
+
   if (hashtags.includes('')) {
     error = 'Между хэштэгами должен быть один пробел';
     return false;
@@ -47,12 +53,6 @@ const validateHashtags = (value: string): boolean => {
   if (hashtags.some((el) => el.includes('#', 1))) {
     error = 'Между хэштэгами должен быть хотя бы один пробел';
     return false;
-  }
-
-  let result: boolean = true;
-
-  if (!value) {
-    return result;
   }
 
   if (hashtags.length > 5) {

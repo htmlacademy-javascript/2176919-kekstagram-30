@@ -3,7 +3,7 @@ import {createBigPhoto} from './renderingBigPhoto'
 
 const template: HTMLTemplateElement | null = document.querySelector('#picture');
 const templatePicture: HTMLElement | null = template && template.content.querySelector('.picture');
-const picturesList: HTMLElement | null = document.querySelector('.pictures');
+export const picturesList: HTMLElement | null = document.querySelector('.pictures');
 const picturesListFragment: DocumentFragment = document.createDocumentFragment();
 
 export const drawingThumbnail = createPhotos;

@@ -22,3 +22,4 @@ describe('getRandomArrayElement', () => {
     expect(getRandomArrayElement(createComments())).not.toBeUndefined();
   });
 });
+
