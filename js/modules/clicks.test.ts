@@ -22,4 +22,3 @@ describe('клик на миниатюре', () => {
     expect(photoOpen()).toBe(true);
   });
 });
-пше

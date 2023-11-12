@@ -1,4 +1,4 @@
-import './modules/drawingThumbnails';
+import './modules/communication';
 import './modules/renderingBigPhoto';
 import './modules/form';
 import './modules/scale';

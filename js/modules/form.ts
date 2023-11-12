@@ -1,4 +1,6 @@
 import {onDocumentKeydown} from '../utils/utils';
+import {sendData} from './communication';
+import {clearsEffects} from './effects';
 import Pristine from 'pristinejs';
 
 const loadingImage: HTMLElement | null = document.querySelector('.img-upload');
@@ -6,8 +8,19 @@ const imageEditingForm: HTMLElement | null = loadingImage && loadingImage.queryS
 const imageSelection: HTMLInputElement | null = loadingImage && loadingImage.querySelector('.img-upload__input');
 const imageCancel: HTMLElement | null = loadingImage && loadingImage.querySelector('.img-upload__cancel');
 const imageForm: HTMLElement | null = loadingImage && loadingImage.querySelector('.img-upload__form');
-const hashtagInput: HTMLElement | null = imageForm && imageForm.querySelector('.text__hashtags');
-const descriptionInput: HTMLElement | null = imageForm && imageForm.querySelector('.text__description');
+const hashtagInput: HTMLInputElement | null = imageForm && imageForm.querySelector('.text__hashtags');
+const descriptionInput: HTMLInputElement | null = imageForm && imageForm.querySelector('.text__description');
+const submitButton: HTMLButtonElement | null = document.querySelector('.img-upload__submit');
+const nonEffects: HTMLInputElement | null = document.querySelector('#effect-none');
+
+const clearsForm = () => {
+  if (imageForm && nonEffects) {
+    imageForm.reset();
+    clearsEffects();
+    nonEffects.checked = true;
+    pristine.reset();
+  }
+};
 
 const openImageSelection = (): void => {
   imageEditingForm && imageEditingForm.classList.remove('hidden');
@@ -15,7 +28,7 @@ const openImageSelection = (): void => {
   document.addEventListener('keydown', handlerEsc);
 };
 
-const closeImageSelection = (): void => {
+export const closeImageSelection = (): void => {
   if (document.activeElement !== hashtagInput && document.activeElement !== descriptionInput && imageSelection) {
     imageEditingForm && imageEditingForm.classList.add('hidden');
     document.body.classList.remove('modal-open');
@@ -30,9 +43,10 @@ imageSelection && imageSelection.addEventListener('change', () => {
 
 imageCancel && imageCancel.addEventListener('click', () => {
   closeImageSelection();
+  clearsForm();
 });
 
-const handlerEsc = onDocumentKeydown(closeImageSelection);
+export const handlerEsc = onDocumentKeydown(closeImageSelection);
 let error: string;
 
 const validateHashtags = (value: string): boolean => {
@@ -94,9 +108,16 @@ const pristine = new Pristine(imageForm, {
 pristine.addValidator(hashtagInput, validateHashtags, getHashtagsErrorMessage);
 pristine.addValidator(descriptionInput, validateDescription, 'длина комментария больше 140 символов.');
 
-imageForm && imageForm.addEventListener('submit', (evt: SubmitEvent) => {
-  const isValid: Function = pristine.validate();
-  if (!isValid) {
+export const setFormSubmit = (onSuccess) => {
+  imageForm && imageForm.addEventListener('submit', (evt: SubmitEvent) => {
     evt.preventDefault();
-  }
-});
+    const isValid: Function = pristine.validate();
+    if (isValid && submitButton) {
+      submitButton.disabled = true;
+      sendData(new FormData(evt.target))
+      .then(onSuccess)
+      .then(clearsForm)
+      .finally(submitButton.disabled = false);
+    }
+  });
+}
