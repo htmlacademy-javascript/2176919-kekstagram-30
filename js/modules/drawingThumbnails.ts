@@ -5,7 +5,21 @@ const templatePicture: HTMLElement | null = template && template.content.querySe
 export const picturesList: HTMLElement | null = document.querySelector('.pictures');
 const picturesListFragment: DocumentFragment = document.createDocumentFragment();
 
-export const drawingThumbnails = (thumbnails: []) => {
+interface Comment {
+  id: number,
+  avatar: string,
+  message: string,
+  name: string,
+}
+interface Photo {
+  id: number,
+  url: string,
+  description: string,
+  likes: number,
+  comments: Comment[],
+}
+
+export const drawingThumbnails = (thumbnails: Photo[]) => {
   if (template && templatePicture && picturesList) {
   thumbnails.forEach(({url, likes, comments, description}) => {
     const pictureElement: HTMLElement = <HTMLElement>templatePicture.cloneNode(true);
@@ -26,4 +40,4 @@ export const drawingThumbnails = (thumbnails: []) => {
 
   picturesList.appendChild(picturesListFragment);
   }
-}
+};

@@ -1,8 +1,6 @@
 import {onDocumentKeydown} from '../utils/utils';
 import {sendData} from './communication';
-import {scaleControlValue} from './scale';
 import {clearsEffects} from './effects';
-import {showsSuccess, showsSendingError} from './message';
 import Pristine from 'pristinejs';
 
 const loadingImage: HTMLElement | null = document.querySelector('.img-upload');
@@ -16,13 +14,10 @@ const submitButton: HTMLButtonElement | null = document.querySelector('.img-uplo
 const nonEffects: HTMLInputElement | null = document.querySelector('#effect-none');
 
 const clearsForm = () => {
-  if (scaleControlValue && nonEffects && hashtagInput && descriptionInput && imageSelection) {
-    scaleControlValue.value = '100';
+  if (imageForm && nonEffects) {
+    imageForm.reset();
     clearsEffects();
     nonEffects.checked = true;
-    hashtagInput.value = '';
-    descriptionInput.value = '';
-    imageSelection.value = '';
     pristine.reset();
   }
 };
@@ -121,11 +116,7 @@ export const setFormSubmit = (onSuccess) => {
       submitButton.disabled = true;
       sendData(new FormData(evt.target))
       .then(onSuccess)
-      .then(showsSuccess)
       .then(clearsForm)
-      .catch(() => {
-        showsSendingError();
-      })
       .finally(submitButton.disabled = false);
     }
   });
