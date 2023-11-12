@@ -7,6 +7,11 @@ const effectLevelValue: HTMLInputElement = effectLevel && effectLevel.querySelec
 const imgUploadPreview: HTMLElement | null = document.querySelector('.img-upload__preview img');
 const effects: HTMLElement | null = document.querySelector('.effects__list');
 
+export const clearsEffects = () => {
+  imgUploadPreview.style.filter = 'none';
+  effectLevel.classList.add('hidden');
+};
+
 if (effectLevel && effectLevelSlider && effectLevelValue && imgUploadPreview && effects) {
   effectLevel.classList.add('hidden');
 
@@ -37,7 +42,7 @@ if (effectLevel && effectLevelSlider && effectLevelValue && imgUploadPreview && 
       start: max,
       step:step,
     });
-  }
+  };
 
   effects.addEventListener('change', (evt) => {
     switch(evt.target.value) {
@@ -72,8 +77,7 @@ if (effectLevel && effectLevelSlider && effectLevelValue && imgUploadPreview && 
         getOptions(1, 3, 0.1);
         break;
       default:
-        imgUploadPreview.style.filter = 'none';
-        effectLevel.classList.add('hidden');
+        clearsEffects();
     }
   });
 }
