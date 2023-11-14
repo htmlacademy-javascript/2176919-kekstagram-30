@@ -2,14 +2,16 @@ import * as noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
 
 const effectLevel: HTMLElement | null = document.querySelector('.img-upload__effect-level');
-const effectLevelSlider: HTMLElement | null = effectLevel && effectLevel.querySelector('.effect-level__slider');
-const effectLevelValue: HTMLInputElement = effectLevel && effectLevel.querySelector('.effect-level__value');
+const effectLevelSlider: any = effectLevel && effectLevel.querySelector('.effect-level__slider');
+const effectLevelValue: HTMLInputElement | null = effectLevel && effectLevel.querySelector('.effect-level__value');
 const imgUploadPreview: HTMLElement | null = document.querySelector('.img-upload__preview img');
 const effects: HTMLElement | null = document.querySelector('.effects__list');
 
 export const clearsEffects = () => {
-  imgUploadPreview.style.filter = 'none';
-  effectLevel.classList.add('hidden');
+  if (imgUploadPreview && effectLevel) {
+    imgUploadPreview.style.filter = 'none';
+    effectLevel.classList.add('hidden');
+  }
 };
 
 if (effectLevel && effectLevelSlider && effectLevelValue && imgUploadPreview && effects) {
@@ -44,8 +46,10 @@ if (effectLevel && effectLevelSlider && effectLevelValue && imgUploadPreview && 
     });
   };
 
-  effects.addEventListener('change', (evt) => {
-    switch(evt.target.value) {
+  effects.addEventListener('change', (evt: Event) => {
+    const target = evt.target as HTMLInputElement;
+    const inputValue = target.value;
+    switch(inputValue) {
       case 'chrome':
         effectLevel.classList.remove('hidden');
         effect = 'grayscale(';
