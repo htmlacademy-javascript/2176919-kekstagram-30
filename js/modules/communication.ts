@@ -2,6 +2,7 @@ import {drawingThumbnails} from './drawingThumbnails';
 import {PHOTO_COUNT} from '../data/data';
 import {closeImageSelection, setFormSubmit} from './form';
 import {showsDataError, hidesDataError, showsSendingError, showsSuccess} from './message'
+import {initFilter} from './filters'
 
 const BASE_URL = 'https://30.javascript.pages.academy/kekstagram';
 const Route = {
@@ -35,5 +36,6 @@ export const sendData = (body) => load(Route.SEND_DATA, showsSendingError, Metho
 getData()
   .then((data) => {
     drawingThumbnails(data.slice(0, PHOTO_COUNT));
+    initFilter(data);
   });
 setFormSubmit(closeImageSelection);
