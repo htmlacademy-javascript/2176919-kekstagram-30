@@ -1,5 +1,5 @@
 import {describe, expect, test} from '@jest/globals';
-import {getRandomInteger, getRandomArrayElement} from './utils';
+import {getRandomInteger, getRandomArrayElement} from '../utils/utils';
 import {createComments} from '../data/data';
 
 describe('getRandomInteger', () => {
