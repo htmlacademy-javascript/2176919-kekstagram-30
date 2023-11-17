@@ -1,5 +1,5 @@
 import {getRandomInteger, debounce} from '../utils/utils';
-import {drawingThumbnails} from './drawingThumbnails';
+import {drawingThumbnails, Photo} from './drawingThumbnails';
 
 const imgFilters: HTMLElement | null = document.querySelector('.img-filters');
 const defaultButton: HTMLElement | null = imgFilters && imgFilters.querySelector('#filter-default');
@@ -17,19 +17,19 @@ const clearsOldThumbnails = () => {
   thumbnails.forEach((el) => el.remove());
 };
 
-export const initFilter = (data) => {
+export const initFilter = (data: Photo[]) => {
   imgFilters?.classList.remove('img-filters--inactive');
-  imgFilters?.addEventListener('click', debounce((evt) => {
+  imgFilters?.addEventListener('click', debounce((evt: Event) => {
     clearsOldThumbnails();
-    if(evt.target.closest('#filter-default')) {
+    if(evt.target?.closest('#filter-default')) {
       replacesActivity(defaultButton);
       drawingThumbnails(showDefault(data));
     };
-    if(evt.target.closest('#filter-random')) {
+    if(evt.target?.closest('#filter-random')) {
       replacesActivity(randomButton);
       drawingThumbnails(showRandom(data));
     };
-    if(evt.target.closest('#filter-discussed')) {
+    if(evt.target?.closest('#filter-discussed')) {
       replacesActivity(discussedButton);
       drawingThumbnails(showDiscussed(data));
     };
