@@ -1,7 +1,9 @@
-import {onDocumentKeydown} from '../utils/utils';
+import {pressesKeydown} from '../utils/utils';
 import {sendData} from './communication';
 import {clearsEffects} from './effects';
 import Pristine from 'pristinejs';
+import {showsSendingError} from './message';
+import {setsDefaultScale} from './scale';
 
 const loadingImage: HTMLElement | null = document.querySelector('.img-upload');
 const imageEditingForm: HTMLElement | null = loadingImage && loadingImage.querySelector('.img-upload__overlay');
@@ -10,7 +12,7 @@ const imageCancel: HTMLElement | null = loadingImage && loadingImage.querySelect
 const imageForm: HTMLElement | null = loadingImage && loadingImage.querySelector('.img-upload__form');
 const hashtagInput: HTMLInputElement | null = imageForm && imageForm.querySelector('.text__hashtags');
 const descriptionInput: HTMLInputElement | null = imageForm && imageForm.querySelector('.text__description');
-const submitButton: HTMLButtonElement | null = document.querySelector('.img-upload__submit');
+export const submitButton: HTMLButtonElement | null = document.querySelector('.img-upload__submit');
 const nonEffects: HTMLInputElement | null = document.querySelector('#effect-none');
 
 const clearsForm = () => {
@@ -19,13 +21,14 @@ const clearsForm = () => {
     clearsEffects();
     nonEffects.checked = true;
     pristine.reset();
+    setsDefaultScale();
   }
 };
 
 const openImageSelection = (): void => {
   imageEditingForm && imageEditingForm.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  document.addEventListener('keydown', handlerEsc);
+  document.addEventListener('keydown', onDocumentKeydown);
 };
 
 export const closeImageSelection = (): void => {
@@ -33,8 +36,9 @@ export const closeImageSelection = (): void => {
     imageEditingForm && imageEditingForm.classList.add('hidden');
     document.body.classList.remove('modal-open');
     imageSelection.value = '';
-    document.removeEventListener('keydown', handlerEsc);
+    document.removeEventListener('keydown', onDocumentKeydown);
   }
+  clearsForm();
 };
 
 imageSelection && imageSelection.addEventListener('change', () => {
@@ -43,26 +47,21 @@ imageSelection && imageSelection.addEventListener('change', () => {
 
 imageCancel && imageCancel.addEventListener('click', () => {
   closeImageSelection();
-  clearsForm();
 });
 
-export const handlerEsc = onDocumentKeydown(closeImageSelection);
+export const onDocumentKeydown = pressesKeydown(closeImageSelection);
 let error: string;
 
 const validateHashtags = (value: string): boolean => {
   const hashtag: RegExp = /^#[a-zа-яё0-9]{1,19}$/i;
-  const hashtags: string[] = value.trim().split(' ');
+  const emptiness = '';
+  const hashtags: string[] = value.toLowerCase().trim().split(' ').filter((el) => el !== emptiness);
 
   let result: boolean = true;
 
   if (!value) {
     return result;
   }
-
-  if (hashtags.includes('')) {
-    error = 'Между хэштэгами должен быть один пробел';
-    return false;
-  };
 
   if (hashtags.some((el) => el.includes('#', 1))) {
     error = 'Между хэштэгами должен быть хотя бы один пробел';
@@ -117,6 +116,7 @@ export const setFormSubmit = (onSuccess) => {
       sendData(new FormData(evt.target))
       .then(onSuccess)
       .then(clearsForm)
+      .catch(showsSendingError)
       .finally(submitButton.disabled = false);
     }
   });
