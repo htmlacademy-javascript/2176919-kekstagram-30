@@ -1,5 +1,5 @@
 import {onDocumentKeydown} from '../utils/utils';
-import {Comment} from './createPhotosArray';
+import {Comment} from './drawingThumbnails';
 
 const bigPicture: HTMLElement | null = document.querySelector('.big-picture');
 const bigComments: HTMLElement | null = bigPicture && bigPicture.querySelector('.social__comments');

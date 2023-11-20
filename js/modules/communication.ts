@@ -1,4 +1,4 @@
-import {drawingThumbnails} from './drawingThumbnails';
+import {Photo, drawingThumbnails} from './drawingThumbnails';
 import {PHOTO_COUNT} from '../data/data';
 import {closeImageSelection, setFormSubmit} from './form';
 import {showsDataError, hidesDataError, showsSendingError, showsSuccess} from './message'
@@ -14,12 +14,12 @@ const Method = {
   POST: 'POST',
 };
 
-const receivingError = () => {
+const receivingError = (): void => {
   showsDataError();
   setTimeout(hidesDataError, 5000);
 };
 
-const load = (route, errorText = null, method = Method.GET, body = null, successText = null) =>
+const load = (route: string, errorText?: (()=> void) | null, method = Method.GET, body?: FormData, successText?: (()=> void) | null): any =>
   fetch(`${BASE_URL}${route}`, {method, body})
     .then((response) => {
       if (!response.ok) {
@@ -31,10 +31,10 @@ const load = (route, errorText = null, method = Method.GET, body = null, success
     .catch(errorText);
 
 export const getData = () => load(Route.GET_DATA, receivingError);
-export const sendData = (body) => load(Route.SEND_DATA, showsSendingError, Method.POST, body, showsSuccess);
+export const sendData = (body: FormData) => load(Route.SEND_DATA, showsSendingError, Method.POST, body, showsSuccess);
 
 getData()
-  .then((data) => {
+  .then((data: Photo[]) => {
     drawingThumbnails(data.slice(0, PHOTO_COUNT));
     initFilter(data);
   });

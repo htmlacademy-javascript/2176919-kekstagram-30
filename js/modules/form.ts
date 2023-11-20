@@ -7,7 +7,7 @@ const loadingImage: HTMLElement | null = document.querySelector('.img-upload');
 const imageEditingForm: HTMLElement | null = loadingImage && loadingImage.querySelector('.img-upload__overlay');
 const imageSelection: HTMLInputElement | null = loadingImage && loadingImage.querySelector('.img-upload__input');
 const imageCancel: HTMLElement | null = loadingImage && loadingImage.querySelector('.img-upload__cancel');
-const imageForm: HTMLElement | null = loadingImage && loadingImage.querySelector('.img-upload__form');
+const imageForm: HTMLFormElement | null = loadingImage && loadingImage.querySelector('.img-upload__form');
 const hashtagInput: HTMLInputElement | null = imageForm && imageForm.querySelector('.text__hashtags');
 const descriptionInput: HTMLInputElement | null = imageForm && imageForm.querySelector('.text__description');
 const submitButton: HTMLButtonElement | null = document.querySelector('.img-upload__submit');
@@ -108,13 +108,13 @@ const pristine = new Pristine(imageForm, {
 pristine.addValidator(hashtagInput, validateHashtags, getHashtagsErrorMessage);
 pristine.addValidator(descriptionInput, validateDescription, 'длина комментария больше 140 символов.');
 
-export const setFormSubmit = (onSuccess) => {
+export const setFormSubmit = (onSuccess: (()=> void)) => {
   imageForm && imageForm.addEventListener('submit', (evt: SubmitEvent) => {
     evt.preventDefault();
     const isValid: Function = pristine.validate();
     if (isValid && submitButton) {
       submitButton.disabled = true;
-      sendData(new FormData(evt.target))
+      sendData(new FormData(imageForm))
       .then(onSuccess)
       .then(clearsForm)
       .finally(submitButton.disabled = false);

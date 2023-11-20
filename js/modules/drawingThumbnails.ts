@@ -5,13 +5,13 @@ const templatePicture: HTMLElement | null = template && template.content.querySe
 export const picturesList: HTMLElement | null = document.querySelector('.pictures');
 const picturesListFragment: DocumentFragment = document.createDocumentFragment();
 
-interface Comment {
+export interface Comment {
   id: number,
   avatar: string,
   message: string,
   name: string,
 }
-interface Photo {
+export interface Photo {
   id: number,
   url: string,
   description: string,
