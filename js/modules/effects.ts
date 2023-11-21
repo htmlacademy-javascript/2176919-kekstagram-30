@@ -3,13 +3,15 @@ import 'nouislider/dist/nouislider.css';
 
 const effectLevel: HTMLElement | null = document.querySelector('.img-upload__effect-level');
 const effectLevelSlider: HTMLElement | null = effectLevel && effectLevel.querySelector('.effect-level__slider');
-const effectLevelValue: HTMLInputElement = effectLevel && effectLevel.querySelector('.effect-level__value');
+const effectLevelValue: HTMLInputElement | null = effectLevel && effectLevel.querySelector('.effect-level__value');
 const imgUploadPreview: HTMLElement | null = document.querySelector('.img-upload__preview img');
 const effects: HTMLElement | null = document.querySelector('.effects__list');
 
 export const clearsEffects = () => {
-  imgUploadPreview.style.filter = 'none';
-  effectLevel.classList.add('hidden');
+  if (imgUploadPreview && effectLevel) {
+    imgUploadPreview.style.filter = 'none';
+    effectLevel.classList.add('hidden');
+  }
 };
 
 if (effectLevel && effectLevelSlider && effectLevelValue && imgUploadPreview && effects) {
@@ -29,9 +31,14 @@ if (effectLevel && effectLevelSlider && effectLevelValue && imgUploadPreview && 
   let units: string;
 
   effectLevelSlider.noUiSlider.on('update', () => {
-    effectLevelValue.value = effectLevelSlider.noUiSlider.get();
+    effectLevelValue.value = `${Number(effectLevelSlider.noUiSlider.get())}`;
     imgUploadPreview.style.filter = effect + effectLevelValue.value + units + ')';
   });
+
+  const resetsSettings = () => {
+    effectLevelValue.value = '';
+    effectLevel.classList.remove('hidden');
+  };
 
   const getOptions = (min: number, max: number, step: number) => {
     effectLevelSlider.noUiSlider.updateOptions({
@@ -47,31 +54,31 @@ if (effectLevel && effectLevelSlider && effectLevelValue && imgUploadPreview && 
   effects.addEventListener('change', (evt) => {
     switch(evt.target.value) {
       case 'chrome':
-        effectLevel.classList.remove('hidden');
+        resetsSettings();
         effect = 'grayscale(';
         units = '';
         getOptions(0, 1, 0.1);
         break;
       case 'sepia':
-        effectLevel.classList.remove('hidden');
+        resetsSettings();
         effect = 'sepia(';
         units = '';
         getOptions(0, 1, 0.1);
         break;
       case 'marvin':
-        effectLevel.classList.remove('hidden');
+        resetsSettings();
         effect = 'invert(';
         units = '%';
         getOptions(0, 100, 1);
         break;
       case 'phobos':
-        effectLevel.classList.remove('hidden');
+        resetsSettings();
         effect = 'blur(';
         units = 'px';
         getOptions(0, 3, 0.1);
         break;
       case 'heat':
-        effectLevel.classList.remove('hidden');
+        resetsSettings();
         effect = 'brightness(';
         units = '';
         getOptions(1, 3, 0.1);

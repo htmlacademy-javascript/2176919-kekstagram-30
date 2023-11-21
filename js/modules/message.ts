@@ -1,5 +1,5 @@
-import {onDocumentKeydown} from '../utils/utils';
-import {handlerEsc} from './form';
+import {pressesKeydown} from '../utils/utils';
+import {onDocumentKeydown, submitButton} from './form';
 
 const templateSuccess: HTMLTemplateElement | null = document.querySelector('#success');
 const success: HTMLElement | null = templateSuccess && templateSuccess.content.querySelector('.success');
@@ -13,14 +13,16 @@ const showMessage = (element: HTMLElement | null, buttonClass: string) => {
   element?.querySelector(buttonClass)?.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onMessageKeydown);
   document.body.addEventListener('click', onBodyClick);
-  document.removeEventListener('keydown', handlerEsc);
+  document.removeEventListener('keydown', onDocumentKeydown);
 };
 
 const hideMessage = () => {
-  const existsElement = document.querySelector('.success') || document.querySelector('.error');
-  existsElement?.remove();
+  const existItem = document.querySelector('.success') || document.querySelector('.error');
+  existItem?.remove();
   document.removeEventListener('keydown', onMessageKeydown);
-  document.addEventListener('keydown', handlerEsc);
+  document.addEventListener('keydown', onDocumentKeydown);
+  document.body.removeEventListener('click', onBodyClick);
+  submitButton.disabled = false;
 };
 
 const onCloseButtonClick = () => {
@@ -33,9 +35,10 @@ export const showsSuccess = () => {
 
 export const showsSendingError = () => {
   showMessage(sendingErrorContainer, '.error__button');
+  submitButton.disabled = true;
 };
 
-const onMessageKeydown = onDocumentKeydown(hideMessage);
+const onMessageKeydown = pressesKeydown(hideMessage);
 
 const onBodyClick = (evt: Event) => {
   if (evt.target?.closest('.success__inner') || evt.target?.closest('.error__inner')) {

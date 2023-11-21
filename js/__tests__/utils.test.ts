@@ -1,6 +1,5 @@
 import {describe, expect, test} from '@jest/globals';
-import {getRandomInteger, getRandomArrayElement} from '../utils/utils';
-import {createComments} from '../data/data';
+import {getRandomInteger} from '../utils/utils';
 
 describe('getRandomInteger', () => {
   test('диапазон от 1000 до 20', () => {
@@ -16,10 +15,3 @@ describe('getRandomInteger', () => {
     expect(getRandomInteger()).toBeLessThanOrEqual(500);
   });
 });
-
-describe('getRandomArrayElement', () => {
-  test('возвращается ли строка из массива', () => {
-    expect(getRandomArrayElement(createComments())).not.toBeUndefined();
-  });
-});
-

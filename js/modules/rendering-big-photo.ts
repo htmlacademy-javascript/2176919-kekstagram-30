@@ -1,12 +1,13 @@
-import {onDocumentKeydown} from '../utils/utils';
-import {Comment} from './createPhotosArray';
+import {pressesKeydown} from '../utils/utils';
+import {Comment} from './drawing-thumbnails';
 
 const bigPicture: HTMLElement | null = document.querySelector('.big-picture');
 const bigComments: HTMLElement | null = bigPicture && bigPicture.querySelector('.social__comments');
 const commentCounter: HTMLElement | null = bigPicture && bigPicture.querySelector('.social__comment-shown-count');
 const commentLoader: HTMLElement | null = bigPicture && bigPicture.querySelector('.comments-loader');
-const closeElement: HTMLElement | null = bigPicture && bigPicture.querySelector('.big-picture__cancel');
-let showingComments: number = 5;
+const closeItem: HTMLElement | null = bigPicture && bigPicture.querySelector('.big-picture__cancel');
+const COMMENT_GROUP = 5;
+let showingComments: number = COMMENT_GROUP;
 let commentsNew: Comment[] = [];
 
 const onShowComments = (): void => {
@@ -21,33 +22,35 @@ const checkingNumberComments = () => {
       commentCounter.textContent = `${showingComments}`;
     } else {
       commentCounter.textContent = `${commentsNew.length}`;
+      commentLoader?.classList.add('hidden');
     };
   }
 }
 
 const openBigPhoto = (): void => {
   bigPicture && bigPicture.classList.remove ('hidden');
+  commentLoader?.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  document.addEventListener('keydown', handlerEsc);
+  document.addEventListener('keydown', onDocumentKeydown);
   commentLoader && commentLoader.addEventListener('click', onShowComments);
 };
 
 const closeBigPhoto = (): void => {
   bigPicture && bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', handlerEsc);
-  showingComments = 5;
+  document.removeEventListener('keydown', onDocumentKeydown);
+  showingComments = COMMENT_GROUP;
   if (commentCounter && commentLoader) {
     commentCounter.textContent = `${showingComments}`;
     commentLoader.removeEventListener('click', onShowComments);
   }
 };
 
-closeElement && closeElement.addEventListener('click', (): void => {
+closeItem && closeItem.addEventListener('click', (): void => {
   closeBigPhoto();
 });
 
-const handlerEsc = onDocumentKeydown(closeBigPhoto);
+const onDocumentKeydown = pressesKeydown(closeBigPhoto);
 
 export const createBigPhoto = (url: string, likes: number, comments: Comment[], description: string): void => {
   openBigPhoto();
@@ -60,6 +63,9 @@ export const createBigPhoto = (url: string, likes: number, comments: Comment[], 
     bigPictureLikes.textContent = `${likes}`;
     bigCommentsCount.textContent = `${comments.length}`;
     bigPictureDescription.textContent = description;
+    if (comments.length <= showingComments) {
+      commentLoader?.classList.add('hidden');
+    }
   }
   createBigComments(comments);
   commentsNew = comments;
@@ -67,7 +73,6 @@ export const createBigPhoto = (url: string, likes: number, comments: Comment[], 
 };
 
 const createBigComments = (comments: Comment[]): void => {
-
   const commentsAll: NodeListOf<Element> | null = bigComments && bigComments.querySelectorAll('.social__comment');
   const commentTemplate = commentsAll && commentsAll[0].cloneNode(true);
 
@@ -75,8 +80,8 @@ const createBigComments = (comments: Comment[]): void => {
     comment.remove();
   });
   let commentCounter: number = 0;
-
-  comments.forEach(({avatar, name, message}) => {
+  for (let i = 0; i < Math.min(comments.length, showingComments); i++) {
+    const {avatar, name, message} = comments[i];
     if (commentCounter < showingComments) {
       const newComment:HTMLElement | null = commentTemplate && commentTemplate.cloneNode(true) as HTMLElement;
       const bigCommentAvatar: HTMLImageElement | null = newComment && newComment.querySelector('.social__picture');
@@ -85,8 +90,9 @@ const createBigComments = (comments: Comment[]): void => {
         bigCommentAvatar.src = avatar;
         bigCommentAvatar.alt = name;
         bigCommentText.textContent = message;
-        bigComments.appendChild(newComment);}
+        bigComments.appendChild(newComment);
+      }
       commentCounter++;
     };
-  });
+  };
 }
